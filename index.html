@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo</title>
+    <link rel="stylesheet" href="css/todo1.css"> 
+</head>
+<body>
+    <section class="color">
+        <div class="margin">
+            <div class="main">
+                <div>
+                    <input class="input" id="value1"><button class="add_item" onclick="myFunction3()"> Add Item</button>
+                </div>
+                <div>
+                    <p class="output" id="neww"></p>
+                </div>
+            </div>  
+        </div>
+    </section>
+    <script>
+        // function myFunction3(){
+           
+        //     let inval = document.getElementById("value1").value;
+        //     let recentSearches = JSON.parse(inval);
+        //     let c = localStorage.setItem("name",inval);
+        //     let a= localStorage.getItem(recentSearches);
+        //     document.getElementById("neww").innerHTML += a+"<br>";
+        // }
+        let globallist = [];
+        
+        let val1 = localStorage.getItem("neww");
+        let val2 = JSON.parse(val1);
+        
+        let len = val2;
+        
+        if(len != null){
+        for(i=0; i<len.length; i++)
+        {
+            globallist.push(val2[i])
+        }
+    }
+        for(i=0; i<globallist.length; i++)
+        {
+            document.getElementById("neww").innerHTML += `<input class='input1' ${globallist[i].checkval ? 'checked' : ''} type='checkbox' onchange ='del(${i})' ><span class ='${globallist[i].checkval ? 'grey' : 'black'}'>${globallist[i].name}</span><button class='button1' onclick ='deleteds(${globallist[i].id})'>X</button> <br>`;
+        }
+
+        function myFunction3(){
+            let inputval = document.getElementById("value1").value;
+
+            let objdata = {
+                'id': Date.now(),
+                'name': inputval,
+                'checkval': false
+            };
+            // localStorage.neww = objdata.id();
+            
+            let value3 = globallist.push(objdata)-1;
+            console.log(value3);
+            localStorage.setItem("neww",JSON.stringify(globallist));
+            document.getElementById("neww").innerHTML += `<input class='input1' type='checkbox'  onchange ='del(${value3})' ><span  >${inputval}</span><button class='button1' onclick ='deleteds(${objdata.id})'>X</button> <br>`;
+            // window.location.reload();
+        }
+
+        function deleteds(id){
+            globallist = globallist.filter((deldata)=>{
+                return deldata.id!= id;
+            }); 
+            localStorage.setItem('neww',JSON.stringify(globallist));
+            document.getElementById("neww").innerHTML ="";
+            for(i=0; i<globallist.length; i++)
+        {
+            document.getElementById("neww").innerHTML += `<input class='input1' ${globallist[i].checkval ? 'checked' : ''} type='checkbox' onchange ='del(${i})' ><span class ='${globallist[i].checkval ? 'grey' : 'black'}'>${globallist[i].name}</span><button class='button1' onclick ='deleteds(${globallist[i].id})'>X</button> <br>`;
+        }
+        }
+        
+        
+        
+        function del(index){
+            // globallist[index].checkval ? "true" : "false"
+            // console.log(globallist[index].checkval)
+            if(globallist[index].checkval){
+                globallist[index].checkval = false;
+                document.getElementsByTagName("span")[index].style.color = "black";
+            }else{
+                globallist[index].checkval = true;
+                document.getElementsByTagName("span")[index].style.color = "grey";
+
+            }
+            localStorage.setItem('neww',JSON.stringify(globallist));
+
+        }
+        
+    </script>
+</body>
+</html>
